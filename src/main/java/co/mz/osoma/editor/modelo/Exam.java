@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Exam implements NodeObject{
+
+//    private
     private StringProperty title = new SimpleStringProperty();
     private ObservableList<Question> questions = FXCollections.observableArrayList();
 

@@ -1,5 +1,6 @@
 package co.mz.osoma.editor.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -51,6 +52,7 @@ public class Choice implements NodeObject{
                 '}';
     }
 
+    @JsonIgnore
     @Override
     public NodeObject getItem() {
         return this;
