@@ -1,11 +1,12 @@
 package co.mz.osoma.editor.modelo;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.List;
 
 public class QuestionMultiChoiceCaseStudy extends QuestionMultiChoice {
-    private StringProperty caseOfStudy;
+    private StringProperty caseOfStudy = new SimpleStringProperty();
 
     public QuestionMultiChoiceCaseStudy(){super();}
 

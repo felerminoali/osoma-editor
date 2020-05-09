@@ -30,12 +30,20 @@ public class MyTreeCell extends TextFieldTreeCell<Object> {
                     @Override
                     public void handle(ActionEvent arg0) {
                         try {
+
+
                             QuestionMultiChoice questionMultiChoice = new QuestionMultiChoice();
-                            questionMultiChoice.setQuestionType(QuestionType.SIGLE);
+                            questionMultiChoice.setQtype(QuestionType.SIGLE);
+                            ((Exam)mainGUIController.getSeletedItem().getValue()).getQuestions().add(questionMultiChoice);
+
                             TreeItem<Object> node = mainGUIController.makeBranch(questionMultiChoice, mainGUIController.getSeletedItem());
 
+                            Helper.totalChoices = 0;
+
                             for (int i = 0; i<questionMultiChoice.getTotalOfChoices(); i++){
-                                mainGUIController.makeBranch(new Choice(), node);
+                                Choice choice = new Choice();
+                                questionMultiChoice.getChoices().add(choice);
+                                mainGUIController.makeBranch(choice, node);
                             }
 
                         }catch (Exception e){
@@ -102,7 +110,9 @@ public class MyTreeCell extends TextFieldTreeCell<Object> {
                                             public void handle(ActionEvent arg0) {
 
                                                 TreeItem<Object> objectTreeItem = mainGUIController.getSeletedItem();
+                                                ((QuestionMultiChoice)objectTreeItem.getParent().getValue()).getChoices().remove((Choice) objectTreeItem.getValue());
                                                 boolean remove = objectTreeItem.getParent().getChildren().remove(objectTreeItem);
+
 
                                             }
                                         }
@@ -123,6 +133,11 @@ public class MyTreeCell extends TextFieldTreeCell<Object> {
                                         new EventHandler<ActionEvent>() {
                                             @Override
                                             public void handle(ActionEvent arg0) {
+
+                                                Helper.totalChoices = ((QuestionMultiChoice)mainGUIController.getSeletedItem().getValue()).getChoices().size()-1;
+
+                                                Choice choice = new Choice();
+                                                ((QuestionMultiChoice)mainGUIController.getSeletedItem().getValue()).getChoices().add(choice);
                                                 mainGUIController.makeBranch(new Choice(), mainGUIController.getSeletedItem());
                                             }
                                         }
@@ -166,10 +181,9 @@ public class MyTreeCell extends TextFieldTreeCell<Object> {
                                         new EventHandler<ActionEvent>() {
                                             @Override
                                             public void handle(ActionEvent arg0) {
-
                                                 TreeItem<Object> objectTreeItem = mainGUIController.getSeletedItem();
+                                               ((Exam)objectTreeItem.getParent().getValue()).getQuestions().remove((Question)objectTreeItem.getValue());
                                                 boolean remove = objectTreeItem.getParent().getChildren().remove(objectTreeItem);
-
                                             }
                                         }
                                 )

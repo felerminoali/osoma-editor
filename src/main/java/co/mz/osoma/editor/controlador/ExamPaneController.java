@@ -37,8 +37,6 @@ public class ExamPaneController implements Initializable, TreeItemController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
-
         item.setCellValueFactory(cellData -> {
             if (cellData.getValue().questionProperty().isEmpty().get()) return cellData.getValue().questionProperty();
 
@@ -47,15 +45,14 @@ public class ExamPaneController implements Initializable, TreeItemController {
             s.set(Jsoup.parse(question).text());
 
             return s;
-        }
-        );
+        });
     }
 
-    public void setMainGUIController(MainGUIController mainGUIController){
+    public void setMainGUIController(MainGUIController mainGUIController) {
         this.mainGUIController = mainGUIController;
     }
 
-    public void fillForm(Object root){
+    public void fillForm(Object root) {
 
         Exam exam = (Exam) root;
 

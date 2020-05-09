@@ -1,37 +1,53 @@
 package co.mz.osoma.editor.modelo;
 
+import co.mz.osoma.editor.service.Helper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Exam implements NodeObject{
 
-//    private
-    private StringProperty title = new SimpleStringProperty();
+
+    private StringProperty id = new SimpleStringProperty();
+    private University university;
+    private IntegerProperty examYear = new SimpleIntegerProperty();
+    private StringProperty description = new SimpleStringProperty();
+    private Category category;
     private ObservableList<Question> questions = FXCollections.observableArrayList();
+    private int count;
 
-
-    public Exam() {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
-    public Exam(String title, ObservableList<Question> questions) {
-        this.title = new SimpleStringProperty(title);
+    public Exam() {
+        this.count = ++Helper.totalExams;
+        this.id.set(UUID.randomUUID().toString());
+    }
+
+    public Exam(String description, ObservableList<Question> questions) {
+        this.count = ++Helper.totalExams;
+        this.id.set(UUID.randomUUID().toString());
+        this.description = new SimpleStringProperty(description);
         this.questions = questions;
     }
 
-    public String getTitle() {
-        return title.get();
+    public String getDescription() {
+        return description.get();
     }
 
-    public void setTitle(String title) {
-        this.title.set(title);
+    public void setDescription(String description) {
+        this.description.set(description);
     }
 
-    public StringProperty titleProperty() {
-        return title;
+    public StringProperty descriptionProperty() {
+        return description;
     }
 
     public ObservableList<Question> getQuestions() {
@@ -42,11 +58,55 @@ public class Exam implements NodeObject{
         this.questions = questions;
     }
 
-    @Override
-    public String toString() {
-        return "Exam";
+    public String getId() {
+        return id.get();
     }
 
+    public StringProperty idProperty() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id.set(id);
+    }
+
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
+
+    public int getExamYear() {
+        return examYear.get();
+    }
+
+    public IntegerProperty examYearProperty() {
+        return examYear;
+    }
+
+    public void setExamYear(int examYear) {
+        this.examYear.set(examYear);
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    @JsonIgnore
     @Override
     public NodeObject getItem() {
         return this;
@@ -60,5 +120,10 @@ public class Exam implements NodeObject{
             nodeObjects.add(n);
         }
         return nodeObjects;
+    }
+
+    @Override
+    public String toString() {
+        return "Exam "  + count;
     }
 }

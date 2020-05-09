@@ -5,8 +5,6 @@ import co.mz.osoma.editor.modelo.*;
 import co.mz.osoma.editor.service.CallbackCustom;
 import co.mz.osoma.editor.service.PaneFactory;
 import co.mz.osoma.editor.service.TreeItemController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -29,13 +27,14 @@ public class MainGUIController implements Initializable {
     @FXML
     public BorderPane mainBoder;
 
-    protected TreeItem<Object> rootNode;
 
     private MainApp mainApp;
 
 
 
     public TreeItem<Object> makeBranch(Object node, TreeItem<Object> parent) {
+
+
         TreeItem<Object> item = new TreeItem<>(node);
         item.setExpanded(true);
         parent.getChildren().add(item);
@@ -61,7 +60,8 @@ public class MainGUIController implements Initializable {
                 makeTree(item, n);
             }
         }
-        return item;
+
+        return parent;
     }
 
     public MainGUIController() {
@@ -71,7 +71,7 @@ public class MainGUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        populateTree();
+        populateTree(null);
 
         treeCon.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showDetails(newValue));
@@ -81,72 +81,48 @@ public class MainGUIController implements Initializable {
 
     private void showDetails(Object obj) {
 
-        try {
+        if(obj !=null){
+            try {
 
-            TreeItem<Object> item = (TreeItem<Object>) obj;
+                TreeItem<Object> item = (TreeItem<Object>) obj;
 
-            PaneFactory paneFactory = new PaneFactory(item.getValue(),this);
-            Pane page = paneFactory.create();
+                PaneFactory paneFactory = new PaneFactory(item.getValue(),this);
+                Pane page = paneFactory.create();
 
-            TreeItemController treeItemController = paneFactory.getLoader().getController();
-            treeItemController.fillForm(item.getValue());
+                TreeItemController treeItemController = paneFactory.getLoader().getController();
+                treeItemController.fillForm(item.getValue());
 
-            this.mainBoder.setCenter(page);
-        } catch (IOException e) {
-
+                this.mainBoder.setCenter(page);
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(ex.getMessage());
+                alert.show();
+            }
         }
+
 
     }
 
-    public void populateTree() {
+    public void populateTree(RootObject node) {
         try {
 
-            ObservableList<Question> list = FXCollections.observableArrayList();
-//            List<Question> list = new ArrayList<>();
+            if(node != null) {
+                TreeItem<Object> parent = new TreeItem<>();
+                parent.setExpanded(true);
 
-            QuestionMultiChoice questionMultiChoice = new QuestionMultiChoice();
+                // create tree
+                treeCon.setRoot(makeTree(parent, node));
 
-            Choice choice = new Choice();
-
-//            choice.setDescription("ahajhdjada");
-            questionMultiChoice.getChoices().add(choice);
-
-
-            list.add(questionMultiChoice);
-            list.add(new QuestionMultiChoice());
-
-
-
-            TreeItem<Object> root = new TreeItem<>();
-            root.setExpanded(true);
-
-            Exam exam = new Exam("Exame de Pt",  list);
-
-            List<Exam> exams = new ArrayList<>();
-
-            exams.add(exam);
-
-            RootObject rootObject = new RootObject(exams);
-
-            rootObject.setNumber("12.0");
-            rootObject.setTitle("olE");
-
-            rootObject.setFileVersion("0.0");
-//            rootObject.setPassingScore(20);
-//            rootObject.setTimeLimit(2);
-
-            rootNode = makeTree(root,rootObject);
-
-            // create tree
-            treeCon.setRoot(root);
-            // defines a custom tree cell factory for the tree view
-            treeCon.setCellFactory(new CallbackCustom(this));
-            treeCon.setShowRoot(false);
-
+                // defines a custom tree cell factory for the tree view
+                treeCon.setCellFactory(new CallbackCustom(this));
+                treeCon.setShowRoot(false);
+            }
 
         } catch (Exception ex) {
-
-            System.out.println(ex.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText( ex.getMessage());
             alert.show();
@@ -157,7 +133,13 @@ public class MainGUIController implements Initializable {
         this.mainApp = mainApp;
     }
 
-    public TreeItem<Object> getRootNode(){ return rootNode;}
+    public TreeItem<Object> getRootNode(){ return treeCon.getRoot().getChildren().get(0);}
+
+    public boolean isRootEmpty(){ return treeCon.getRoot() == null;}
+
+    public void setRootNode(TreeItem<Object> node){
+//        rootNode = findRootObject(node);
+    }
 
     public TreeItem<Object> getSeletedItem(){
         return this.treeCon.getSelectionModel().getSelectedItem();

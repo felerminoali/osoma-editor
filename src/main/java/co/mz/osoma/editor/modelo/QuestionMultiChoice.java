@@ -5,27 +5,23 @@ import java.util.List;
 
 public class QuestionMultiChoice extends Question{
 
-    protected QuestionType questionType;
+
     protected List<Choice> choices = new ArrayList<>();
     protected int totalOfChoices = 4;
 
 
-    public QuestionMultiChoice(){super();}
+    public QuestionMultiChoice(){
+        super();
+        this.qtype = QuestionType.SIGLE;
+    }
 
     public QuestionMultiChoice(String question, String explanation, QuestionType questionType, List<Choice> choices, int totalOfChoices) {
         super(question, explanation);
-        this.questionType = questionType;
         this.choices = choices;
+        this.qtype = QuestionType.SIGLE;
         this.totalOfChoices = totalOfChoices;
     }
 
-    public QuestionType getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(QuestionType questionType) {
-        this.questionType = questionType;
-    }
 
     public List<Choice> getChoices() {
         return choices;

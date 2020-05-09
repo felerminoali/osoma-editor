@@ -33,7 +33,9 @@
             </MenuBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
                <items>
+                  <Button mnemonicParsing="false" onAction="#handleNew" text="New" />
                   <Button mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#handleOpen" text="Open" />
                </items></ToolBar>
          </children>
       </VBox>

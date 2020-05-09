@@ -19,7 +19,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-//        primaryStage.setTitle("Hello World");
+//        primaryStage.setDescription("Hello World");
 //        primaryStage.setScene(new Scene(root));
 //        primaryStage.show();
 
@@ -42,9 +42,7 @@ public class MainApp extends Application {
             rootLayout = (BorderPane) loader.load();
 
             rootLayoutController = loader.getController();
-
-
-
+            rootLayoutController.setPrimaryStage(primaryStage);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
 

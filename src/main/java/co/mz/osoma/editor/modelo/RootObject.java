@@ -1,6 +1,9 @@
 package co.mz.osoma.editor.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +16,15 @@ public class RootObject implements NodeObject{
     private DoubleProperty passingScore = new SimpleDoubleProperty();
     private IntegerProperty timeLimit = new SimpleIntegerProperty();
 
-    List<Exam> exams = new ArrayList<>();
+    private ObservableList<Exam> exams = FXCollections.observableArrayList();
 
-    public RootObject(List<Exam> exams) {
+    public RootObject(ObservableList<Exam> exams) {
         this.exams = exams;
     }
 
+    public RootObject() {
+
+    }
 
     public String getTitle() {
         return title.get();
@@ -33,11 +39,11 @@ public class RootObject implements NodeObject{
     }
 
 
-    public List<Exam> getExams() {
+    public ObservableList<Exam> getExams() {
         return exams;
     }
 
-    public void setExams(List<Exam> exams) {
+    public void setExams(ObservableList<Exam> exams) {
         this.exams = exams;
     }
 
@@ -89,6 +95,7 @@ public class RootObject implements NodeObject{
         this.timeLimit.set(timeLimit);
     }
 
+    @JsonIgnore
     @Override
     public NodeObject getItem() {
         return this;
@@ -106,6 +113,9 @@ public class RootObject implements NodeObject{
 
     @Override
     public String toString() {
-        return "Todos";
+        return "Collection";
     }
+
+
+
 }

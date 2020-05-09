@@ -73,7 +73,7 @@ public class AddQuestionController implements Initializable, TreeItemController 
             @Override
             public void handle(InputEvent event) {
                 Question selectedItemObject = getSelectedItemObject();
-                selectedItemObject.explanationProperty().set(taExplanation.getHtmlText());
+                selectedItemObject.feedbackProperty().set(taExplanation.getHtmlText());
             }
         });
 
@@ -93,6 +93,7 @@ public class AddQuestionController implements Initializable, TreeItemController 
         tabPane.getTabs().add(tabQA);
         hBox.getChildren().add(tabPane);
 
+
         anchorPane.getChildren().add(hBox);
         mainPane.getChildren().add(anchorPane);
     }
@@ -104,7 +105,7 @@ public class AddQuestionController implements Initializable, TreeItemController 
     public void fillForm(Object object){
         Question question = (Question) object;
         taQuestion.setHtmlText(question.getQuestion());
-        taExplanation.setHtmlText(question.getExplanation());
+        taExplanation.setHtmlText(question.getFeedback());
     }
 
     @Override
